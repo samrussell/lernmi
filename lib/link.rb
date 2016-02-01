@@ -15,15 +15,24 @@ class Link
     @value = value
   end
 
-  def backpropagate(error)
-    @input_neurons.each { |neuron| neuron.backpropagate(error) }
+  def backpropagate(sensitivity)
+    @input_neurons.each { |neuron| neuron.backpropagate(@weight * sensitivity) }
 
-    update_weight(error)
+    update_weight(sensitivity)
   end
 
   private
 
-  def update_weight(error)
-    @weight += error * @value * @training_rate
+  def update_weight(sensitivity)
+    gradient = sigmoid_gradient(@value) * sensitivity
+    @weight -= gradient * @training_rate
+  end
+
+  def sigmoid(value)
+    1 / (1 + Math.exp(-value))
+  end
+
+  def sigmoid_gradient(value)
+    sigmoid(value) * (1 - sigmoid(value))
   end
 end

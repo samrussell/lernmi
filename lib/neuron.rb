@@ -26,7 +26,7 @@ class Neuron
   end
 
   def feed_back
-    @input_links.each { |link| link.backpropagate(error) }
+    @input_links.each { |link| link.backpropagate(sensitivity) }
   end
 
   def value
@@ -35,8 +35,8 @@ class Neuron
 
   private
 
-  def error
-    (@expected_value - value) * sigmoid_gradient(value)
+  def sensitivity
+    2 * (value - @expected_value)
   end
 
   def sigmoid(value)
