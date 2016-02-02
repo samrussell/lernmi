@@ -1,11 +1,12 @@
 class Neuron
   attr_reader :output_links, :input_links
 
-  def initialize
+  def initialize(hidden = false)
     @output_links = []
     @input_links = []
     @intermediate_value = 0.0
     @expected_value = 0.0
+    @hidden = hidden
   end
 
   def propagate(input_value)
@@ -13,7 +14,7 @@ class Neuron
   end
 
   def backpropagate(input_value)
-    @expected_value = input_value
+    @expected_value += input_value
   end
 
   def reset
@@ -36,14 +37,14 @@ class Neuron
   private
 
   def sensitivity
-    (value - @expected_value) * value * (1 - value)
+    if @hidden
+      @expected_value * value * (1 - value)
+    else
+      (value - @expected_value) * value * (1 - value)
+    end
   end
 
   def sigmoid(value)
     1 / (1 + Math.exp(-value))
-  end
-
-  def sigmoid_gradient(value)
-    sigmoid(value) * (1 - sigmoid(value))
   end
 end

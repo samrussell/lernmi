@@ -16,8 +16,7 @@ class Link
   end
 
   def backpropagate(sensitivity)
-    # TODO feedback to inner neurons
-    #@input_neurons.each { |neuron| neuron.backpropagate(@weight * sensitivity) }
+    @input_neurons.each { |neuron| neuron.backpropagate(@weight * sensitivity) }
 
     update_weight(sensitivity)
   end
@@ -27,13 +26,5 @@ class Link
   def update_weight(sensitivity)
     gradient = @value * sensitivity
     @weight -= gradient * @training_rate
-  end
-
-  def sigmoid(value)
-    1 / (1 + Math.exp(-value))
-  end
-
-  def sigmoid_gradient(value)
-    sigmoid(value) * (1 - sigmoid(value))
   end
 end
