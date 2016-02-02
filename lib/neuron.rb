@@ -36,7 +36,7 @@ class Neuron
   private
 
   def sensitivity
-    2 * (value - @expected_value)
+    (value - @expected_value) * value * (1 - value)
   end
 
   def sigmoid(value)
