@@ -18,19 +18,21 @@ neuron1_3 = Neuron.new(true)
 neuron2_1 = Neuron.new
 training_rate = 0.1
 
-link0_0_1 = Link.new(0.4, training_rate)
-link0_1_1 = Link.new(0.4, training_rate)
-link0_2_1 = Link.new(0.4, training_rate)
-link0_0_2 = Link.new(0.4, training_rate)
-link0_1_2 = Link.new(0.4, training_rate)
-link0_2_2 = Link.new(0.4, training_rate)
-link0_0_3 = Link.new(0.4, training_rate)
-link0_1_3 = Link.new(0.4, training_rate)
-link0_2_3 = Link.new(0.4, training_rate)
-link1_0_1 = Link.new(0.4, training_rate)
-link1_1_1 = Link.new(0.4, training_rate)
-link1_2_1 = Link.new(0.4, training_rate)
-link1_3_1 = Link.new(0.4, training_rate)
+weight_generator = Random.new(1)
+
+link0_0_1 = Link.new(weight_generator.rand - 0.5, training_rate)
+link0_1_1 = Link.new(weight_generator.rand - 0.5, training_rate)
+link0_2_1 = Link.new(weight_generator.rand - 0.5, training_rate)
+link0_0_2 = Link.new(weight_generator.rand - 0.5, training_rate)
+link0_1_2 = Link.new(weight_generator.rand - 0.5, training_rate)
+link0_2_2 = Link.new(weight_generator.rand - 0.5, training_rate)
+link0_0_3 = Link.new(weight_generator.rand - 0.5, training_rate)
+link0_1_3 = Link.new(weight_generator.rand - 0.5, training_rate)
+link0_2_3 = Link.new(weight_generator.rand - 0.5, training_rate)
+link1_0_1 = Link.new(weight_generator.rand - 0.5, training_rate)
+link1_1_1 = Link.new(weight_generator.rand - 0.5, training_rate)
+link1_2_1 = Link.new(weight_generator.rand - 0.5, training_rate)
+link1_3_1 = Link.new(weight_generator.rand - 0.5, training_rate)
 
 neuron0_0.output_links << link0_0_1
 neuron0_1.output_links << link0_1_1
