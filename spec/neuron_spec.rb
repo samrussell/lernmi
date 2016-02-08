@@ -2,48 +2,37 @@ require 'spec_helper'
 require './lib/neuron'
 
 describe Neuron do
-  describe '#feed_forward' do
-    let(:neuron) { Neuron.new }
-    let(:output_link) { double }
-    let(:expected_output) { 0.81757 }
+  let(:neuron) { Neuron.new }
 
-    before do
-      neuron.output_links << output_link
-
-      # sigmoid(1.5) = 0.81757...
-      # if we give the neuron a total of 1.5, it should propagate sigmoid(1.5)
-
-      neuron.propagate 0.4
-      neuron.propagate 0.5
-      neuron.propagate 0.6
-    end
-
-    it 'sums its inputs, applies a sigmoid, and outputs the result to its links' do
-      expect(output_link).to receive(:propagate).with(within(0.00001).of(expected_output))
-
-      neuron.feed_forward
+  describe "#reset" do
+    it "resets the output and sensitivity" do
+    neuron.input 0.3
+    neuron.submit_sensitivity 0.3
+    expect(neuron.output).to_not eq(0.0)
+    expect(neuron.get_sensitivity).to_not eq(0.0)
+    neuron.reset
+    expect(neuron.output).to eq(0.0)
+    expect(neuron.get_sensitivity).to eq(0.0)
     end
   end
 
-  describe '#feed_back' do
-    let(:neuron) { Neuron.new }
-    let(:input_link) { double }
-    let(:expected_input) { -0.00510 }
-
-    before do
-      neuron.input_links << input_link
-
-      # set neuron value to 0.5, then tell it the right answer was 0.6
-      # make sure it correctly backpropagates the difference
-
-      neuron.propagate 0.5
-      neuron.backpropagate 0.6
+  describe "#input" do
+    it "adds to the input sum" do
+      expect(neuron.output).to eq(0.0)
+      neuron.input(0.3)
+      expect(neuron.output).to eq(0.0 + 0.3)
+      neuron.input(-0.2)
+      expect(neuron.output).to eq(0.0 + 0.3 + -0.2)
     end
+  end
 
-    it 'backpropagates the difference' do
-      expect(input_link).to receive(:backpropagate).with(within(0.00001).of(expected_input))
-
-      neuron.feed_back
+  describe "#submit_sensitivity" do
+    it "adds to the sensitivity" do
+      expect(neuron.get_sensitivity).to eq(0.0)
+      neuron.submit_sensitivity(0.3)
+      expect(neuron.get_sensitivity).to eq(0.0 + 0.3)
+      neuron.submit_sensitivity(-0.2)
+      expect(neuron.get_sensitivity).to eq(0.0 + 0.3 + -0.2)
     end
   end
 end

@@ -21,7 +21,7 @@ class Link
 
     output_sensitivity = weighted_input_sensitivity * gradient_of_sigmoid(output_neuron.output)
 
-    input_neuron.set_sensitivity(@weight * output_sensitivity)
+    input_neuron.submit_sensitivity(@weight * output_sensitivity)
 
     update_weight(output_sensitivity)
   end

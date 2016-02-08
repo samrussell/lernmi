@@ -1,66 +1,27 @@
 class Neuron
-  attr_reader :output_links, :input_links
-
-  def initialize(hidden = false)
-    @output_links = []
-    @input_links = []
-    @intermediate_value = 0.0
-    @expected_value = 0.0
-    @hidden = hidden
+  def initialize
+    @inputs = []
+    @sensitivities = []
   end
 
   def input(value)
-    raise MethodNotImplementedException
+    @inputs << value
   end
 
   def output
-    raise MethodNotImplementedException
+    @inputs.reduce(0.0, &:+)
   end
 
-  def set_sensitivity(value)
-    raise MethodNotImplementedException
+  def submit_sensitivity(value)
+    @sensitivities << value
   end
 
   def get_sensitivity
-    raise MethodNotImplementedException
-  end
-
-  def propagate(input_value)
-    @intermediate_value += input_value
-  end
-
-  def backpropagate(input_value)
-    @expected_value += input_value
+    @sensitivities.reduce(0.0, &:+)
   end
 
   def reset
-    @intermediate_value = 0.0
-    @expected_value = 0.0
-  end
-
-  def feed_forward
-    @output_links.each { |link| link.propagate(value) }
-  end
-
-  def feed_back
-    @input_links.each { |link| link.backpropagate(sensitivity) }
-  end
-
-  def value
-    sigmoid(@intermediate_value)
-  end
-
-  private
-
-  def sensitivity
-    if @hidden
-      @expected_value * value * (1 - value)
-    else
-      (value - @expected_value) * value * (1 - value)
-    end
-  end
-
-  def sigmoid(value)
-    1 / (1 + Math.exp(-value))
+    @inputs = []
+    @sensitivities = []
   end
 end

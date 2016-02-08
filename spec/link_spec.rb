@@ -42,7 +42,7 @@ describe Link do
       expect(output_neuron).to receive(:output).and_return(output_value)
       expect(output_neuron).to receive(:get_sensitivity).and_return(input_weighted_sensitivity)
       expect(input_neuron).to receive(:output).and_return(input_value)
-      expect(input_neuron).to receive(:set_sensitivity).with(weighted_sensitivity)
+      expect(input_neuron).to receive(:submit_sensitivity).with(weighted_sensitivity)
 
       expect { link.backpropagate }.to change { link.weight }.by(within(0.0001).of weight_update)
     end
