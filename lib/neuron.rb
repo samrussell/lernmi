@@ -17,6 +17,14 @@ class Neuron
     raise MethodNotImplementedException
   end
 
+  def set_sensitivity(value)
+    raise MethodNotImplementedException
+  end
+
+  def get_sensitivity
+    raise MethodNotImplementedException
+  end
+
   def propagate(input_value)
     @intermediate_value += input_value
   end
