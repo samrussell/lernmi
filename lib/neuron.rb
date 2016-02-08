@@ -9,6 +9,14 @@ class Neuron
     @hidden = hidden
   end
 
+  def input(value)
+    raise MethodNotImplementedException
+  end
+
+  def output
+    raise MethodNotImplementedException
+  end
+
   def propagate(input_value)
     @intermediate_value += input_value
   end

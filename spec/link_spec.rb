@@ -1,36 +1,34 @@
 require 'spec_helper'
 require './lib/link'
+require './lib/neuron'
 
 describe Link do
+  let(:test_value) { 0.8 }
+  let(:weight) { 0.5 }
+  let(:link) { Link.new(weight) }
+  let(:output_neuron) { instance_double(Neuron) }
+  let(:input_neuron) { instance_double(Neuron) }
+
+  before do
+    link.output_neuron = output_neuron
+    link.input_neuron = input_neuron
+  end
+
+  def neuron_activation(value)
+    1 / (1 + Math.exp(-value))
+  end
+
   describe '#propagate' do
-    let(:test_value) { 0.8 }
-    let(:weight) { 0.5 }
-    let(:link) { Link.new(weight) }
-    let(:output_neuron) { double }
-
-    before do
-      link.output_neurons << output_neuron
-    end
-
     it 'applies its weight and propagates the value' do
-      expect(output_neuron).to receive(:propagate).with(weight * test_value)
+      expect(input_neuron).to receive(:output).and_return(test_value)
 
-      link.propagate(test_value)
+      expect(output_neuron).to receive(:input).with(weight * neuron_activation(test_value))
+
+      link.propagate
     end
   end
 
   describe '#backpropagate' do
-    let(:test_value) { 0.1 }
-    let(:weight) { 0.5 }
-    let(:training_rate) { 0.1 }
-    let(:link) { Link.new(weight, training_rate) }
-    let(:input_neuron) { double }
-
-    before do
-      link.input_neurons << input_neuron
-      link.propagate 1.0
-    end
-
     it 'updates its weight and backpropagates the value' do
       expect(input_neuron).to receive(:backpropagate).with(test_value)
 

@@ -1,6 +1,6 @@
 class Link
   attr_accessor :weight
-  attr_reader :output_neurons, :input_neurons
+  attr_accessor :output_neuron, :input_neuron
 
   def initialize(initial_weight, training_rate = 0.1)
     @output_neurons = []
@@ -10,9 +10,10 @@ class Link
     @value = 0.0
   end
 
-  def propagate(value)
-    @value = value
-    @output_neurons.each { |neuron| neuron.propagate(@weight * value) }
+  def propagate
+    value = @input_neuron.output
+
+    @output_neuron.input(@weight * sigmoid(value))
   end
 
   def backpropagate(sensitivity)
@@ -26,5 +27,9 @@ class Link
   def update_weight(sensitivity)
     gradient = @value * sensitivity
     @weight -= gradient * @training_rate
+  end
+
+  def sigmoid(value)
+    1 / (1 + Math.exp(-value))
   end
 end
