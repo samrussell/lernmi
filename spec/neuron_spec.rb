@@ -23,8 +23,11 @@ describe Neuron do
   describe "#input" do
     it "adds to the input sum" do
       expect(neuron.output).to eq sigmoid(0.0)
+      neuron.reset
       neuron.input(0.3)
       expect(neuron.output).to eq sigmoid(0.0 + 0.3)
+      neuron.reset
+      neuron.input(0.3)
       neuron.input(-0.2)
       expect(neuron.output).to eq sigmoid(0.0 + 0.3 + -0.2)
     end
@@ -33,8 +36,11 @@ describe Neuron do
   describe "#submit_sensitivity" do
     it "adds to the sensitivity" do
       expect(neuron.get_sensitivity).to eq(0.0)
+      neuron.reset
       neuron.submit_sensitivity(0.3)
       expect(neuron.get_sensitivity).to eq(0.0 + 0.3)
+      neuron.reset
+      neuron.submit_sensitivity(0.3)
       neuron.submit_sensitivity(-0.2)
       expect(neuron.get_sensitivity).to eq(0.0 + 0.3 + -0.2)
     end
