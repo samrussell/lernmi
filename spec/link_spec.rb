@@ -14,16 +14,12 @@ describe Link do
     link.input_neuron = input_neuron
   end
 
-  def neuron_activation(value)
-    1 / (1 + Math.exp(-value))
-  end
-
   describe '#propagate' do
     let(:output_value) { 0.8 }
 
     it 'applies its weight and propagates the value' do
       expect(input_neuron).to receive(:output).and_return(output_value)
-      expect(output_neuron).to receive(:input).with(weight * neuron_activation(output_value))
+      expect(output_neuron).to receive(:input).with(weight * output_value)
 
       link.propagate
     end

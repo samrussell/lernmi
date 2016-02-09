@@ -1,7 +1,6 @@
 class Neuron
   def initialize
-    @inputs = []
-    @sensitivities = []
+    reset
   end
 
   def input(value)
@@ -9,7 +8,7 @@ class Neuron
   end
 
   def output
-    @inputs.reduce(0.0, &:+)
+    @output_value ||= sigmoid(@inputs.reduce(0.0, &:+))
   end
 
   def submit_sensitivity(value)
@@ -17,11 +16,17 @@ class Neuron
   end
 
   def get_sensitivity
-    @sensitivities.reduce(0.0, &:+)
+    @output_sensitivity ||= @sensitivities.reduce(0.0, &:+)
   end
 
   def reset
     @inputs = []
     @sensitivities = []
+    @output_value = nil
+    @output_sensitivity = nil
+  end
+
+  def sigmoid(value)
+    1 / (1 + Math.exp(-value))
   end
 end

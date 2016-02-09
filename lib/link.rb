@@ -13,7 +13,7 @@ class Link
   def propagate
     value = @input_neuron.output
 
-    @output_neuron.input(@weight * sigmoid(value))
+    @output_neuron.input(value * @weight)
   end
 
   def backpropagate
@@ -31,10 +31,6 @@ class Link
   def update_weight(sensitivity)
     gradient = input_neuron.output * sensitivity
     @weight -= gradient * @training_rate
-  end
-
-  def sigmoid(value)
-    1 / (1 + Math.exp(-value))
   end
 
   def gradient_of_sigmoid(value)

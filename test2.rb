@@ -18,21 +18,13 @@ link0_0_1 = Link.new(0.4, training_rate)
 link0_1_1 = Link.new(0.5, training_rate)
 link0_2_1 = Link.new(0.6, training_rate)
 
-neuron0_0.output_links << link0_0_1
-neuron0_1.output_links << link0_1_1
-neuron0_2.output_links << link0_2_1
+link0_0_1.output_neuron = neuron1_1
+link0_1_1.output_neuron = neuron1_1
+link0_2_1.output_neuron = neuron1_1
 
-neuron1_1.input_links << link0_0_1
-neuron1_1.input_links << link0_1_1
-neuron1_1.input_links << link0_2_1
-
-link0_0_1.output_neurons << neuron1_1
-link0_1_1.output_neurons << neuron1_1
-link0_2_1.output_neurons << neuron1_1
-
-link0_0_1.input_neurons << neuron0_0
-link0_1_1.input_neurons << neuron0_1
-link0_2_1.input_neurons << neuron0_2
+link0_0_1.input_neuron = neuron0_0
+link0_1_1.input_neuron = neuron0_1
+link0_2_1.input_neuron = neuron0_2
 
 training_data = [
   [[0.0, 0.0], 0.0],
@@ -42,12 +34,11 @@ training_data = [
 ]
 
 bias_neurons = [neuron0_0]
-bias_neurons.each { |neuron| neuron.propagate 1.0 }
+bias_neurons.each { |neuron| neuron.input 999.0 }
 
 input_neurons = [neuron0_1, neuron0_2]
-feed_forward_neurons = [neuron0_0, neuron0_1, neuron0_2]
 output_neurons = [neuron1_1]
-feed_back_neurons = [neuron1_1]
+links = [link0_0_1, link0_1_1, link0_2_1]
 
 temporary_neurons = input_neurons + output_neurons
 
@@ -55,20 +46,19 @@ temporary_neurons = input_neurons + output_neurons
   training_data.each do |inputs, expected_output|
     temporary_neurons.each &:reset
 
-    neuron0_1.propagate inputs[0]
-    neuron0_2.propagate inputs[1]
+    neuron0_1.input inputs[0]
+    neuron0_2.input inputs[1]
 
-    feed_forward_neurons.each &:feed_forward
+    links.each &:propagate
 
     output_neurons.each do |neuron|
-      neuron.backpropagate expected_output
+      neuron.submit_sensitivity (neuron.output - expected_output)
     end
 
-    feed_back_neurons.each &:feed_back
+    links.each &:backpropagate
 
     if trial % 10000 == 0
-      puts "Input #{inputs[0]} #{inputs[1]} output #{output_neurons.first.value} expected #{expected_output}"
-      #puts "#{link0_0_1.weight}, #{link0_1_1.weight}, #{link0_2_1.weight}"
+      puts "Input #{inputs[0]} #{inputs[1]} output #{output_neurons.first.output} expected #{expected_output}"
     end
   end
 
