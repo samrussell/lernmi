@@ -23,17 +23,16 @@ class Link
 
     input_neuron.submit_sensitivity(@weight * output_sensitivity)
 
-    update_weight(output_sensitivity)
+    update_weight(input_neuron.output * output_sensitivity)
   end
 
   private
 
   def update_weight(sensitivity)
-    gradient = input_neuron.output * sensitivity
-    @weight -= gradient * @training_rate
+    @weight -= sensitivity * @training_rate
   end
 
   def gradient_of_sigmoid(value)
-    value * (1 - value)
+    value * (1.0 - value)
   end
 end
