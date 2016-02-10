@@ -2,12 +2,11 @@ class Link
   attr_accessor :weight
   attr_accessor :output_neuron, :input_neuron
 
-  def initialize(initial_weight, training_rate = 0.1)
-    @output_neurons = []
-    @input_neurons = []
+  def initialize(initial_weight, training_rate = 0.1, input_neuron = nil, output_neuron = nil)
     @weight = initial_weight
     @training_rate = training_rate
-    @value = 0.0
+    @input_neuron = input_neuron
+    @output_neuron = output_neuron
   end
 
   def propagate
