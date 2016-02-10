@@ -11,15 +11,11 @@ class Link
   end
 
   def propagate
-    value = @input_neuron.output
-
-    @output_neuron.input(value * @weight)
+    @output_neuron.input(@input_neuron.output * @weight)
   end
 
   def backpropagate
-    weighted_input_sensitivity = output_neuron.get_sensitivity
-
-    output_sensitivity = weighted_input_sensitivity * gradient_of_sigmoid(output_neuron.output)
+    output_sensitivity = output_neuron.previous_layer_sensitivity_sum * activation_function_sensitivity(output_neuron.output)
 
     input_neuron.submit_sensitivity(@weight * output_sensitivity)
 
@@ -32,7 +28,7 @@ class Link
     @weight -= sensitivity * @training_rate
   end
 
-  def gradient_of_sigmoid(value)
+  def activation_function_sensitivity(value)
     value * (1.0 - value)
   end
 end

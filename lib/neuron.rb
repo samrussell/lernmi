@@ -1,32 +1,29 @@
 class Neuron
+  attr_reader :previous_layer_sensitivity_sum
+
   def initialize
     reset
   end
 
   def input(value)
-    @input += value
+    @input_sum += value
   end
 
   def output
-    @output_value ||= sigmoid(@input)
+    @output ||= activation_function(@input_sum)
   end
 
   def submit_sensitivity(value)
-    @sensitivity += value
-  end
-
-  def get_sensitivity
-    @output_sensitivity ||= @sensitivity
+    @previous_layer_sensitivity_sum += value
   end
 
   def reset
-    @input = 0.0
-    @sensitivity = 0.0
-    @output_value = nil
-    @output_sensitivity = nil
+    @input_sum = 0.0
+    @previous_layer_sensitivity_sum = 0.0
+    @output = nil
   end
 
-  def sigmoid(value)
+  def activation_function(value)
     1.0 / (1.0 + Math.exp(-value))
   end
 end
