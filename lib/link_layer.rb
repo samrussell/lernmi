@@ -4,8 +4,8 @@ class LinkLayer
   end
 
   def join(input_neuron_layer, output_neuron_layer)
-    @links = input_neuron_layer.map do |input_neuron|
-      output_neuron_layer.map do |output_neuron|
+    @links = input_neuron_layer.all_neurons.map do |input_neuron|
+      output_neuron_layer.learning_neurons.map do |output_neuron|
         link = Link.new(generate_weight, 0.1, input_neuron, output_neuron)
       end
     end.flatten
