@@ -42,6 +42,22 @@ puts "Loaded"
 
 training_data = images.zip(labels)
 
+def vote(output_neurons)
+  votes = (0..9).to_a.zip(output_neurons.map(&:output))
+  top_vote = votes.max {|a, b| a[1] <=> b[1]}
+  puts "Guess: #{top_vote[0]} confidence #{top_vote[1]}"
+end
+
+def ascii_print(inputs)
+  output = inputs.each_slice(28).map do |row|
+    row.map do |darkness|
+      darkness > 128 ? "X" : " "
+    end.join
+  end.join("\n")
+
+  puts output
+end
+
 100.times do |trial|
   training_data.each.with_index do |(inputs, label), label_index|
     input_neurons = neuron_layers.first.learning_neurons
@@ -68,9 +84,11 @@ training_data = images.zip(labels)
     end
 
     if label_index % 100 == 0
-      output_map = output_neurons.map { |neuron| "%0.1f" % neuron.output }
-      puts "Input output #{output_map} expected #{label}"
+      #output_map = output_neurons.map { |neuron| "%0.1f" % neuron.output }
+      #puts "Input output #{output_map} expected #{label}"
+      ascii_print(inputs)
+      puts "expected #{label}"
+      vote(output_neurons)
     end
   end
 end
-
