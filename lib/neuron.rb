@@ -5,11 +5,16 @@ class Neuron
     reset
   end
 
+  def bias
+    @bias = true
+  end
+
   def input(value)
     @input_sum += value
   end
 
   def output
+    return 1.0 if @bias
     @output ||= activation_function(@input_sum)
   end
 
@@ -21,6 +26,7 @@ class Neuron
     @input_sum = 0.0
     @previous_layer_sensitivity_sum = 0.0
     @output = nil
+    @bias = false
   end
 
   def activation_function(value)
