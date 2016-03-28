@@ -19,4 +19,33 @@ describe NeuronLayer do
   it "creates 1 bias neuron" do
     expect(neuron_layer.all_neurons.first.output).to eq(1.0)
   end
+
+  describe "#reset" do
+    before do
+      neuron_layer.learning_neurons.each do |neuron|
+        neuron.input 1.0
+      end
+    end
+
+    it "resets all learning neurons" do
+      neuron_layer.learning_neurons.each do |neuron|
+        expect(neuron.output).to be > 0.5
+      end
+
+      neuron_layer.reset
+
+      neuron_layer.learning_neurons.each do |neuron|
+        expect(neuron.output).to eq(0.5)
+      end
+    end
+
+    it "doesn't reset bias neurons" do
+      bias_neuron = neuron_layer.all_neurons.first
+      expect(bias_neuron.output).to eq(1.0)
+
+      neuron_layer.reset
+
+      expect(bias_neuron.output).to eq(1.0)
+    end
+  end
 end

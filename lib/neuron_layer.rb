@@ -7,4 +7,8 @@ class NeuronLayer
     @bias_neuron.input(999)
     @all_neurons = [@bias_neuron] + @learning_neurons
   end
+
+  def reset
+    learning_neurons.each &:reset
+  end
 end

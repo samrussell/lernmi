@@ -10,7 +10,6 @@ class LinkLayer
   end
 
   def propagate
-    @output_neuron_layer.learning_neurons.each &:reset
     @links.each &:propagate
   end
 

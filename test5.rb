@@ -21,13 +21,6 @@ link_layers = [
   LinkLayer.new(neuron_layers[1], neuron_layers[2])
 ]
 
-#training_data = [
-#  [[0.0, 0.0], 0.0],
-#  [[1.0, 0.0], 1.0],
-#  [[0.0, 1.0], 1.0],
-#  [[1.0, 1.0], 0.0]
-#]
-
 puts "Loading MNIST data"
 
 imagefile = File.open("assets/t10k-images-idx3-ubyte.gz")
@@ -60,9 +53,8 @@ end
 
 100.times do |trial|
   training_data.each.with_index do |(inputs, label), label_index|
+    neuron_layers.each { |neuron_layer| neuron_layer.learning_neurons.each &:reset }
     input_neurons = neuron_layers.first.learning_neurons
-
-    input_neurons.each &:reset
 
     input_neurons.zip(inputs).each do |neuron, input|
       neuron.input input
@@ -84,8 +76,6 @@ end
     end
 
     if label_index % 100 == 0
-      #output_map = output_neurons.map { |neuron| "%0.1f" % neuron.output }
-      #puts "Input output #{output_map} expected #{label}"
       ascii_print(inputs)
       puts "expected #{label}"
       vote(output_neurons)
