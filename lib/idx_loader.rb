@@ -8,7 +8,7 @@ class IdxLoader
 
   def self.load(input_stream)
     header = input_stream.read(DWORD_SIZE)
-    zero_bytes, data_type, dimensions_count = header.unpack(HEADER_UNPACK_STRING)
+    _zero_bytes, _data_type, dimensions_count = header.unpack(HEADER_UNPACK_STRING)
 
     case dimensions_count
     when IMAGE_FILE
@@ -21,8 +21,6 @@ class IdxLoader
       unpack_labels(labels_count, input_stream)
     end
   end
-
-  private
 
   def self.unpack_images(images_count, row_length, column_length, input_stream)
     images_count.times.map do 
