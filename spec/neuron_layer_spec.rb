@@ -20,6 +20,36 @@ describe NeuronLayer do
     expect(neuron_layer.all_neurons.first.output).to eq(1.0)
   end
 
+  describe "#input" do
+    let(:input_values) { [0.1, 0.3, 0.5, 0.2, -0.4] }
+
+    it "sets the input value for each learning neuron" do
+      neuron_layer.learning_neurons.zip(input_values).each do |neuron, value|
+        expect(neuron).to receive(:input).with(value)
+      end
+
+      neuron_layer.input(input_values)
+    end
+  end
+
+  describe "#expected_output" do
+    let(:expected_output_values) { [0.2, 0.3, 0.4, 0.5, 0.6] }
+    let(:output_values) { [0.5, 0.4, 0.3, 0.2, 0.1] }
+    let(:sensitivities) { [0.5 - 0.2, 0.4 - 0.3, 0.3 - 0.4, 0.2 - 0.5, 0.1 - 0.6] }
+
+    it "sets the expected output value for each learning neuron" do
+      neuron_layer.learning_neurons.zip(output_values).each do |neuron, value|
+        expect(neuron).to receive(:output).and_return(value)
+      end
+
+      neuron_layer.learning_neurons.zip(sensitivities).each do |neuron, value|
+        expect(neuron).to receive(:submit_sensitivity).with(value)
+      end
+
+      neuron_layer.expected_output(expected_output_values)
+    end
+  end
+
   describe "#reset" do
     before do
       neuron_layer.learning_neurons.each do |neuron|
