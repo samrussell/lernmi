@@ -30,9 +30,9 @@ training_data = [
 
 10000000.times do |trial|
   training_data.each do |inputs, expected_output|
-    input_neurons = neuron_layers.first.learning_neurons
+    neuron_layers.each(&:reset)
 
-    input_neurons.each &:reset
+    input_neurons = neuron_layers.first.learning_neurons
 
     input_neurons.zip(inputs).each do |neuron, input|
       neuron.input input
@@ -54,7 +54,6 @@ training_data = [
 
     if trial % 10000 == 0
       puts "Input #{inputs[0]} #{inputs[1]} output #{output_neurons.first.output} expected #{expected_output}"
-      #puts "#{link0_0_1.weight}, #{link0_1_1.weight}, #{link0_2_1.weight}"
     end
   end
 end
