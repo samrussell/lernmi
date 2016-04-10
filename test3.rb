@@ -126,7 +126,6 @@ temporary_neurons = [ neuron0_1, neuron0_2,
 
     if trial % 10000 == 0
       puts "Input #{inputs[0]} #{inputs[1]} output #{output_neurons.first.output} expected #{expected_output}"
-      #puts "#{link0_0_1.weight}, #{link0_1_1.weight}, #{link0_2_1.weight}"
     end
   end
 
